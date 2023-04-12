@@ -1,17 +1,67 @@
 //1. Import area
-import React from 'react'
+import React, { useReducer } from 'react'
+import { Button } from 'react-bootstrap';
+
+    
+            let initialState = {
+                movies:[
+                        {
+                        name:'1',
+                        image:'http://pixner.net/boleto/demo/assets/images/movie/movie01.jpg'
+                        },
+                        {
+                        name:'2',
+                        image:"http://pixner.net/boleto/demo/assets/images/movie/movie02.jpg"
+                        },
+                        {
+                        name:'3',
+                        image:"http://pixner.net/boleto/demo/assets/images/movie/movie03.jpg"
+                        }
+                    ],
+                cart:[]
+}
+
+    let reducer = (oldState = initialState, action) =>{
+        //console.log(action)
+        let newState = oldState;
+        switch(action.type){
+            case "DELETE_MOVIE" :
+
+            return{
+                ...oldState,
+                movies:[
+                    ...oldState.movies.filter((cv,idx,arr)=>{
+                        //return console.log(cv.name !== action.moviename) 
+                        return cv.name !== action.moviename 
+                    }),
+                ]
+            }
+                break;
+            case "ADD_MOVIE":
+                return newState;
+                break;
+            default:
+                return newState;
+        }
+    }
+    //reducer(); 
 
 //2. Defination
-export default function Home() {
+    export default function Home() {
     //2.1 Hooks area
+      //useReducer hook function
+      const [ newState ,dispatch] = useReducer( reducer ,initialState)
+        //console.log(initialState)
+            
 
-    //2.2 Function defination
-    
 
-    //2.3 return statement
-    return (
-        <>
+        //2.2 Function defination
         
+
+        //2.3 return statement
+        return (
+            <React.Fragment>
+             { console.log(newState.movies) }
             
             <section className="banner-section">
                 <div className="banner-bg bg_img bg-fixed" data-background="assets/images/banner/banner01.jpg" />
@@ -299,90 +349,45 @@ export default function Home() {
                         <a className="view-all" href="movie-grid.html">View All</a>
                         </div>
                         <div className="row mb-30-none justify-content-center">
-                        <div className="col-sm-6 col-lg-4">
-                            <div className="movie-grid">
-                            <div className="movie-thumb c-thumb">
-                                <a href="#0">
-                                <img src="assets/images/movie/movie01.jpg" alt="movie" />
-                                </a>
-                            </div>
-                            <div className="movie-content bg-one">
-                                <h5 className="title m-0">
-                                <a href="#0">alone</a>
-                                </h5>
-                                <ul className="movie-rating-percent">
-                                <li>
-                                    <div className="thumb">
-                                    <img src="assets/images/movie/tomato.png" alt="movie" />
-                                    </div>
-                                    <span className="content">88%</span>
-                                </li>
-                                <li>
-                                    <div className="thumb">
-                                    <img src="assets/images/movie/cake.png" alt="movie" />
-                                    </div>
-                                    <span className="content">88%</span>
-                                </li>
-                                </ul>
-                            </div>
-                            </div>
-                        </div>
-                        <div className="col-sm-6 col-lg-4">
-                            <div className="movie-grid">
-                            <div className="movie-thumb c-thumb">
-                                <a href="#0">
-                                <img src="assets/images/movie/movie02.jpg" alt="movie" />
-                                </a>
-                            </div>
-                            <div className="movie-content bg-one">
-                                <h5 className="title m-0">
-                                <a href="#0">mars</a>
-                                </h5>
-                                <ul className="movie-rating-percent">
-                                <li>
-                                    <div className="thumb">
-                                    <img src="assets/images/movie/tomato.png" alt="movie" />
-                                    </div>
-                                    <span className="content">88%</span>
-                                </li>
-                                <li>
-                                    <div className="thumb">
-                                    <img src="assets/images/movie/cake.png" alt="movie" />
-                                    </div>
-                                    <span className="content">88%</span>
-                                </li>
-                                </ul>
-                            </div>
-                            </div>
-                        </div>
-                        <div className="col-sm-6 col-lg-4">
-                            <div className="movie-grid">
-                            <div className="movie-thumb c-thumb">
-                                <a href="#0">
-                                <img src="assets/images/movie/movie03.jpg" alt="movie" />
-                                </a>
-                            </div>
-                            <div className="movie-content bg-one">
-                                <h5 className="title m-0">
-                                <a href="#0">venus</a>
-                                </h5>
-                                <ul className="movie-rating-percent">
-                                <li>
-                                    <div className="thumb">
-                                    <img src="assets/images/movie/tomato.png" alt="movie" />
-                                    </div>
-                                    <span className="content">88%</span>
-                                </li>
-                                <li>
-                                    <div className="thumb">
-                                    <img src="assets/images/movie/cake.png" alt="movie" />
-                                    </div>
-                                    <span className="content">88%</span>
-                                </li>
-                                </ul>
-                            </div>
-                            </div>
-                        </div>
+                            {
+                            newState.movies &&
+                            newState.movies.map((cv,idx,arr)=>{
+                                                                return(
+                                                                         <div key={idx} className="col-sm-6 col-lg-4">
+                                                                                <div className="movie-grid">
+                                                                                <div className="movie-thumb c-thumb">
+                                                                                    <a href="#0">
+                                                                                    <img src={cv.image} alt="movie" />
+                                                                                    </a>
+                                                                                </div>
+                                                                                    <div className="movie-content bg-one">
+                                                                                        <h5 className="title m-0">
+                                                                                        <a href="#0">{cv.name}</a>
+                                                                                        </h5>
+                                                                                        <ul className="movie-rating-percent">
+                                                                                        <li>
+                                                                                            <div className="thumb">
+                                                                                            <img src="assets/images/movie/tomato.png" alt="movie" />
+                                                                                            </div>
+                                                                                            <span className="content">88%</span>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <div className="thumb">
+                                                                                            <img src="assets/images/movie/cake.png" alt="movie" />
+                                                                                            </div>
+                                                                                            <span className="content">88%</span>
+                                                                                        </li>
+                                                                                        <li>
+
+                                                                                        <Button className="rounded-circle btn-sm" variant="outline-danger" onClick={(e)=>{dispatch({type:"DELETE_MOVIE",moviename:cv.name})}}>Delete</Button>
+                                                                                        </li>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                         </div>
+                                                                       )
+                                                            })
+                            }
                         </div>
                     </div>
                     <div className="article-section padding-bottom">
@@ -532,6 +537,6 @@ export default function Home() {
                 </div>
             </section>
             
-        </>
+        </React.Fragment>
     )
 }
